@@ -33,9 +33,7 @@ func Bootstrap() {
 	api := app.Group("/api")
 
 	v1 := api.Group("/v1")
-	v1.Get("/ping", func(c *fiber.Ctx) error {
-		return c.SendString("pong")
-	})
+	v1.Get("/ping", Ping)
 
 	if err := app.Listen(fmt.Sprintf(":%s", config.Get("PORT"))); err != nil {
 		panic(err)
