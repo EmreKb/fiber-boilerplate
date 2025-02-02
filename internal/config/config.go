@@ -11,6 +11,8 @@ var required = []string{
 	"PORT",
 	"NODE_ENV",
 
+	"DATABASE_HOST",
+	"DATABASE_PORT",
 	"DATABASE_USER",
 	"DATABASE_PASSWORD",
 	"DATABASE_DB",
@@ -36,4 +38,8 @@ func Load() {
 
 func Get(key string) string {
 	return os.Getenv(key)
+}
+
+func DatabaseUrl() string {
+	return fmt.Sprintf("postgresql://%s:%s@%s:%s/%s", Get("DATABASE_USER"), Get("DATABASE_PASSWORD"), Get("DATABASE_HOST"), Get("DATABASE_PORT"), Get("DATABASE_DB"))
 }

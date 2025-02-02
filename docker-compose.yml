@@ -1,0 +1,13 @@
+services:
+  database:
+    image: bitnami/postgresql:latest
+    container_name: database
+    ports:
+      - "${DATABASE_PORT}:5432"
+    env_file: .env
+    environment:
+      - POSTGRES_USERNAME=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DATABASE=${DATABASE_DB}
+    volumes:
+      - ./postgres:/bitnami/postgresql/data
