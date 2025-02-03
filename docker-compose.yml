@@ -44,6 +44,16 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
     networks:
       - monitoring
+  app:
+    build: .
+    container_name: app
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - DATABASE_HOST=database
+      - REDIS_HOST=redis
+    networks:
+      - monitoring
 
 volumes:
   postgres_data:
