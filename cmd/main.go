@@ -8,6 +8,7 @@ import (
 
 	"github.com/EmreKb/fiber-boilerplate/api"
 	"github.com/EmreKb/fiber-boilerplate/internal/config"
+	"github.com/EmreKb/fiber-boilerplate/pkg/cache"
 	"github.com/EmreKb/fiber-boilerplate/pkg/database"
 )
 
@@ -16,6 +17,7 @@ func main() {
 
 	config.Load()
 	database.NewPostgres(ctx, config.DatabaseUrl())
+	cache.NewRedis(config.RedisAddr(), config.Get("REDIS_PASSWORD"))
 
 	go api.Bootstrap()
 

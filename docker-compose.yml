@@ -35,6 +35,15 @@ services:
       - ./prometheus/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml
     networks:
       - monitoring
+  redis:
+    image: bitnami/redis:latest
+    container_name: redis
+    ports:
+      - "${REDIS_PORT}:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    networks:
+      - monitoring
 
 volumes:
   postgres_data:

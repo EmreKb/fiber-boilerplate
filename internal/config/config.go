@@ -22,6 +22,10 @@ var required = []string{
 
 	"JWT_REFRESH_SECRET",
 	"JWT_REFRESH_EXPIRE",
+
+	"REDIS_HOST",
+	"REDIS_PORT",
+	"REDIS_PASSWORD",
 }
 
 func Load() {
@@ -42,4 +46,8 @@ func Get(key string) string {
 
 func DatabaseUrl() string {
 	return fmt.Sprintf("postgresql://%s:%s@%s:%s/%s", Get("DATABASE_USER"), Get("DATABASE_PASSWORD"), Get("DATABASE_HOST"), Get("DATABASE_PORT"), Get("DATABASE_DB"))
+}
+
+func RedisAddr() string {
+	return fmt.Sprintf("%s:%s", Get("REDIS_HOST"), Get("REDIS_PORT"))
 }
