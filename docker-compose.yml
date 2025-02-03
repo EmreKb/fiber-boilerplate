@@ -10,4 +10,36 @@ services:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_DATABASE=${DATABASE_DB}
     volumes:
-      - ./postgres:/bitnami/postgresql/data
+      - postgres_data:/opt/bitnami/postgresql/data
+    networks:
+      - monitoring
+  grafana:
+    image: bitnami/grafana:latest
+    container_name: grafana
+    ports:
+      - "${GRAFANA_PORT}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    volumes:
+      - grafana_data:/opt/bitnami/grafana/data
+      - ./grafana/datasource.yml:/opt/bitnami/grafana/provisioning/datasources/datasource.yml
+    networks:
+      - monitoring
+  prometheus:
+    image: bitnami/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "${PROMETHEUS_PORT}:9090"
+    volumes:
+      - prometheus_data:/opt/bitnami/prometheus/data
+      - ./prometheus/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml
+    networks:
+      - monitoring
+
+volumes:
+  postgres_data:
+  grafana_data:
+  prometheus_data:
+
+networks:
+  monitoring:

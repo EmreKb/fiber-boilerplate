@@ -6,6 +6,7 @@ import (
 
 	"github.com/EmreKb/fiber-boilerplate/internal/config"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
@@ -13,6 +14,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func Bootstrap() {
@@ -31,6 +33,7 @@ func Bootstrap() {
 	app.Use(requestid.New(requestid.ConfigDefault))
 
 	api := app.Group("/api")
+	api.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
 
 	v1 := api.Group("/v1")
 	v1.Get("/ping", Ping)
