@@ -3,3 +3,6 @@ run:
 
 tidy:
 	go mod tidy
+
+gsql:
+	sqlc generate

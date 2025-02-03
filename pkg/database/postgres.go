@@ -2,13 +2,14 @@ package database
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/EmreKb/fiber-boilerplate/pkg/database/sqlc"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Postgres struct {
-	Pool *pgxpool.Pool
+	Pool    *pgxpool.Pool
+	Queries *sqlc.Queries
 }
 
 func NewPostgres(ctx context.Context, url string) *Postgres {
@@ -17,9 +18,10 @@ func NewPostgres(ctx context.Context, url string) *Postgres {
 		panic(err)
 	}
 
-	fmt.Println("Database connected successfully")
+	queries := sqlc.New(pool)
 
 	return &Postgres{
-		Pool: pool,
+		Pool:    pool,
+		Queries: queries,
 	}
 }
