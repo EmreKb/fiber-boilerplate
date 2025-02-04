@@ -11,6 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
+	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
@@ -31,6 +32,8 @@ func Bootstrap() {
 	}))
 	app.Use(recover.New())
 	app.Use(requestid.New(requestid.ConfigDefault))
+	limiterConfig := limiter.ConfigDefault
+	app.Use(limiter.New(limiterConfig))
 
 	api := app.Group("/api")
 	api.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
