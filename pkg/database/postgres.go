@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/EmreKb/fiber-boilerplate/pkg/database/sqlc"
+	"github.com/EmreKb/fiber-boilerplate/pkg/logging"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -18,6 +19,7 @@ func NewPostgres(ctx context.Context, url string) *Postgres {
 		panic(err)
 	}
 
+	logging.Info("Connected to postgres")
 	queries := sqlc.New(pool)
 
 	return &Postgres{

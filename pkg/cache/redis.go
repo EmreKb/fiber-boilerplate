@@ -3,6 +3,7 @@ package cache
 import (
 	"context"
 
+	"github.com/EmreKb/fiber-boilerplate/pkg/logging"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -15,6 +16,8 @@ func NewRedis(addr string, password string) *Redis {
 		Addr:     addr,
 		Password: password,
 	})
+
+	logging.Info("Connected to redis")
 
 	return &Redis{
 		Client: client,

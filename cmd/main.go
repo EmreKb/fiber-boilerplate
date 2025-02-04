@@ -10,10 +10,12 @@ import (
 	"github.com/EmreKb/fiber-boilerplate/internal/config"
 	"github.com/EmreKb/fiber-boilerplate/pkg/cache"
 	"github.com/EmreKb/fiber-boilerplate/pkg/database"
+	"github.com/EmreKb/fiber-boilerplate/pkg/logging"
 )
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
+	logging.Setup()
 
 	config.Load()
 	database.NewPostgres(ctx, config.DatabaseUrl())
