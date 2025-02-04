@@ -54,6 +54,16 @@ services:
       - REDIS_HOST=redis
     networks:
       - monitoring
+  migrate:
+    image: migrate/migrate:latest
+    container_name: migrate
+    command: ["-path", "/migrations", "-database", "postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:${DATABASE_PORT}/${DATABASE_DB}?sslmode=disable", "up"]
+    depends_on:
+     - database
+    volumes:
+      - ./migrations:/migrations
+    networks:
+      - monitoring
 
 volumes:
   postgres_data:

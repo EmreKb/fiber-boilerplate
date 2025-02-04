@@ -1,4 +1,4 @@
-CREATE TABLE users (
+CREATE TABLE users(
   id BIGSERIAL PRIMARY KEY,
-  name text NOT NULL
+  name TEXT NOT NULL
 );
