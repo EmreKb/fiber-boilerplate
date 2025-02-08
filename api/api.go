@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/EmreKb/fiber-boilerplate/internal/config"
+	"github.com/EmreKb/fiber-boilerplate/internal/validator"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -17,6 +18,25 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
+
+type X struct {
+	Y string `json:"name" validate:"min=5,max=40,required"`
+}
+
+func test(c *fiber.Ctx) error {
+	v := validator.New()
+	var x X
+
+	if err := c.BodyParser(&x); err != nil {
+		return err
+	}
+
+	if errs := v.Validate(x); len(errs) > 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(ErrorResponse(errs, "validation error"))
+	}
+
+	return c.Status(200).JSON(fiber.Map{"status": "ok"})
+}
 
 func Bootstrap() {
 	app := fiber.New(fiber.Config{
@@ -40,6 +60,7 @@ func Bootstrap() {
 
 	v1 := api.Group("/v1")
 	v1.Get("/ping", Ping)
+	v1.Post("/test", test)
 
 	if err := app.Listen(fmt.Sprintf(":%s", config.Get("PORT"))); err != nil {
 		panic(err)
